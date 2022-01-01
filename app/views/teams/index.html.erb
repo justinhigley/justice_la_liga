@@ -1,0 +1,11 @@
+<div class="flex flex-wrap">
+	<% @teams.each do |team| %>
+		<%= link_to team_path(team) do %>
+		<div class="w-[200px] shadow-md hover:shadow-lg m-8">
+  		<%= image_tag("https://via.placeholder.com/200x100?text=Team+Image") %>
+    		<p><%= team.name %></p> 
+    		<p><%= team.owner_name %></p>
+		</div>
+		<% end %>
+	<% end %>
+</div>

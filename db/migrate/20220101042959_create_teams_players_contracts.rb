@@ -1,4 +1,4 @@
-class InitialTables < ActiveRecord::Migration[7.0]
+class CreateTeamsPlayersContracts < ActiveRecord::Migration[7.0]
   def change
     enable_extension 'pgcrypto'
 
@@ -33,7 +33,7 @@ class InitialTables < ActiveRecord::Migration[7.0]
     end
 
     add_index :teams, [:mfl_league_id, :mfl_year, :mfl_id], unique: true, name: 'teams_upsert_index'
-    add_index :players, :mfl_id, unique: true
+    add_index :players, :mfl_id, unique: true, name: 'player_mfl_id'
     add_index :contracts, [:mfl_league_id, :mfl_player_id], unique: true, name: 'contracts_upsert_index'
   end
 end

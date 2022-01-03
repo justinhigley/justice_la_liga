@@ -1,4 +1,4 @@
-desc "Download team list from MFL and update teams table"
+desc "Download team list from MFL and update leagues and teams tables"
 task :populate_teams => :environment do
 
 	mfl_year = "2021"
@@ -9,6 +9,17 @@ task :populate_teams => :environment do
 		"#{Rails.application.credentials.justice_la_liga[:api_key]}"
 
 	mfl_league_id = JSON.parse(response.body)["league"]["id"]
+
+	formatted_league = JSON.parse(response.body)["league"]
+
+	league_attrs = {
+		mfl_id: "#{formatted_league["id"]}",
+		name: "#{formatted_league["name"]}",
+		salary_cap: "#{formatted_league["salaryCapAmount"]}",
+		base_url: "#{formatted_league["baseURL"]}"
+	}
+
+	League.upsert(league_attrs, unique_by: :league_mfl_id)
 
 	formatted_teams = JSON.parse(response.body)["league"]["franchises"]["franchise"]
 
@@ -23,7 +34,6 @@ task :populate_teams => :environment do
 	end
 
 	Team.upsert_all(team_attrs, unique_by: :teams_upsert_index)
-
 end
 
 desc "Download player list from MFL and update players table"
@@ -44,7 +54,7 @@ task :populate_players => :environment do
 		}
 	end
 
-	Player.upsert_all(player_attrs, unique_by: :mfl_id)
+	Player.upsert_all(player_attrs, unique_by: :player_mfl_id)
 
 end
 
@@ -76,4 +86,23 @@ task :populate_contracts => :environment do
 
 	Contract.upsert_all(contract_attrs.flatten, unique_by: :contracts_upsert_index)
 
+end
+
+desc "Update players with YTD scoring"
+task :populate_scores => :environment do
+
+	mfl_year = "2021"
+	mfl_league_id = "63949"
+
+	response = Faraday.get "https://www65.myfantasyleague.com/" \
+		"#{mfl_year}/export?TYPE=playerScores&L=#{mfl_league_id}&W=YTD&RULES=1" \
+		"&APIKEY=#{Rails.application.credentials.justice_la_liga[:api_key]}&JSON=1"
+
+	formatted_scores = JSON.parse(response.body)["playerScores"]["playerScore"]
+
+	formatted_scores.each do |player|
+		a_player = Player.find_by(mfl_id: player["id"])
+		a_player.ytd_score = player["score"]
+		a_player.save
+	end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_01_042959) do
+ActiveRecord::Schema.define(version: 2022_01_03_181249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 2022_01_01_042959) do
     t.index ["mfl_league_id", "mfl_player_id"], name: "contracts_upsert_index", unique: true
   end
 
+  create_table "leagues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "mfl_id"
+    t.string "name"
+    t.decimal "salary_cap", precision: 7, scale: 2
+    t.string "base_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mfl_id"], name: "league_mfl_id", unique: true
+  end
+
   create_table "players", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "mfl_id"
     t.string "position"
@@ -35,7 +45,8 @@ ActiveRecord::Schema.define(version: 2022_01_01_042959) do
     t.string "team"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["mfl_id"], name: "index_players_on_mfl_id", unique: true
+    t.decimal "ytd_score", precision: 7, scale: 2
+    t.index ["mfl_id"], name: "player_mfl_id", unique: true
   end
 
   create_table "teams", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

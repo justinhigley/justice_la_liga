@@ -10,13 +10,20 @@ task :populate_teams => :environment do
 
 	mfl_league_id = JSON.parse(response.body)["league"]["id"]
 
+	valid_positions = []
+
+	JSON.parse(response.body)["league"]["starters"]["position"].each do |position|
+		valid_positions.push(position["name"])
+	end
+
 	formatted_league = JSON.parse(response.body)["league"]
 
 	league_attrs = {
 		mfl_id: "#{formatted_league["id"]}",
 		name: "#{formatted_league["name"]}",
 		salary_cap: "#{formatted_league["salaryCapAmount"]}",
-		base_url: "#{formatted_league["baseURL"]}"
+		base_url: "#{formatted_league["baseURL"]}",
+		player_positions: valid_positions
 	}
 
 	League.upsert(league_attrs, unique_by: :league_mfl_id)

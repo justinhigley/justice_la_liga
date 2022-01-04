@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   root "application#index"
 
   resources :teams, only: [:index, :show]
+  resources :holdouts, only: [:index]
 end

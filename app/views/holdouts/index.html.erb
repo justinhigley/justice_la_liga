@@ -1,185 +1,231 @@
-<h1>Salaries</h1>
+<div class="flex">
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="2" class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top QB Salaries</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Salary</th>
+				</tr>
+				<% @top_salaries["QB"].each do |player, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+				</tr>
+				<% end %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light font-bold">Avg Salary</td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(@top_salaries["QB"].sum { |player, salary| salary } /
+						@top_salaries["QB"].size) %></td>
+				</tr>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light font-bold">50% of Avg Salary</td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(@top_salaries["QB"].sum { |player, salary| salary } /
+						@top_salaries["QB"].size * 0.50) %></td>
+				</tr>
+			</table>
+  	</div>
+	</div>
 
-<h2>Top QB Salaries</h2>
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="5" class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top QB Scores</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Years</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Salary</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Points</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Holdout?</th>
+				</tr>
+				<% @top_scores["QB"].each do |name, salary, points, yrs| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= name %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= yrs %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= points %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= holdout?(yrs, points, @holdout_points["QB"], salary, @holdout_salaries["QB"]) %></td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+	</div>
+</div>
 
-<table>
-	<tr>
-		<th>Player Name</th>
-		<th>Salary</th>
-	</tr>
-	<% @top_salaries["QB"].each do |player, salary| %>
-	<tr>
-		<td><%= player %></td>
-		<td><%= number_to_currency(salary) %></td>
-	</tr>
-	<% end %>
-	<tr>
-		<td>Avg Salary</td>
-		<td><%= number_to_currency(@top_salaries["QB"].sum { |player, salary| salary } /
-			@top_salaries["QB"].size) %></td>
-	</tr>
-	<tr>
-		<td>50% of Avg Salary</td>
-		<td><%= number_to_currency(@top_salaries["QB"].sum { |player, salary| salary } /
-			@top_salaries["QB"].size * 0.50) %></td>
-	</tr>
-</table>
+<div class="flex">
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="2" class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top RB Salaries</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Salary</th>
+				</tr>
+				<% @top_salaries["RB"].each do |player, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+				</tr>
+				<% end %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light font-bold">Avg Salary</td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(@top_salaries["RB"].sum { |player, salary| salary } /
+						@top_salaries["RB"].size) %></td>
+				</tr>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light font-bold">50% of Avg Salary</td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(@top_salaries["RB"].sum { |player, salary| salary } /
+						@top_salaries["RB"].size * 0.50) %></td>
+				</tr>
+			</table>
+  	</div>
+	</div>
 
-<h2>Top RB Salaries</h2>
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="5" class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top RB Scores</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Years</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Salary</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Points</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Holdout?</th>
+				</tr>
+				<% @top_scores["RB"].each do |name, salary, points, yrs| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= name %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= yrs %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= points %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= holdout?(yrs, points, @holdout_points["RB"], salary, @holdout_salaries["RB"]) %></td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+	</div>
+</div>
 
-<table>
-	<tr>
-		<th>Player Name</th>
-		<th>Salary</th>
-	</tr>
-	<% @top_salaries["RB"].each do |player, salary| %>
-	<tr>
-		<td><%= player %></td>
-		<td><%= number_to_currency(salary) %></td>
-	</tr>
-	<% end %>
-	<tr>
-		<td>Avg Salary</td>
-		<td><%= number_to_currency(@top_salaries["RB"].sum { |player, salary| salary } /
-			@top_salaries["RB"].size) %></td>
-	</tr>
-	<tr>
-		<td>50% of Avg Salary</td>
-		<td><%= number_to_currency(@top_salaries["RB"].sum { |player, salary| salary } /
-			@top_salaries["RB"].size * 0.50) %></td>
-	</tr>
-</table>
+<div class="flex">
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="2" class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top WR Salaries</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Salary</th>
+				</tr>
+				<% @top_salaries["WR"].each do |player, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+				</tr>
+				<% end %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light font-bold">Avg Salary</td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(@top_salaries["WR"].sum { |player, salary| salary } /
+						@top_salaries["WR"].size) %></td>
+				</tr>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light font-bold">50% of Avg Salary</td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(@top_salaries["WR"].sum { |player, salary| salary } /
+						@top_salaries["WR"].size * 0.50) %></td>
+				</tr>
+			</table>
+  	</div>
+	</div>
 
-<h2>Top WR Salaries</h2>
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="5" class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top WR Scores</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Years</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Salary</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Points</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Holdout?</th>
+				</tr>
+				<% @top_scores["WR"].each do |name, salary, points, yrs| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= name %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= yrs %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= points %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= holdout?(yrs, points, @holdout_points["WR"], salary, @holdout_salaries["WR"]) %></td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+	</div>
+</div>
 
-<table>
-	<tr>
-		<th>Player Name</th>
-		<th>Salary</th>
-	</tr>
-	<% @top_salaries["WR"].each do |player, salary| %>
-	<tr>
-		<td><%= player %></td>
-		<td><%= number_to_currency(salary) %></td>
-	</tr>
-	<% end %>
-	<tr>
-		<td>Avg Salary</td>
-		<td><%= number_to_currency(@top_salaries["WR"].sum { |player, salary| salary } /
-			@top_salaries["WR"].size) %></td>
-	</tr>
-	<tr>
-		<td>50% of Avg Salary</td>
-		<td><%= number_to_currency(@top_salaries["RB"].sum { |player, salary| salary } /
-			@top_salaries["WR"].size * 0.50) %></td>
-	</tr>
-</table>
+<div class="flex">
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="2" class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top TE Salaries</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Salary</th>
+				</tr>
+				<% @top_salaries["TE"].each do |player, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+				</tr>
+				<% end %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light font-bold">Avg Salary</td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(@top_salaries["TE"].sum { |player, salary| salary } /
+						@top_salaries["TE"].size) %></td>
+				</tr>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light font-bold">50% of Avg Salary</td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(@top_salaries["TE"].sum { |player, salary| salary } /
+						@top_salaries["TE"].size * 0.50) %></td>
+				</tr>
+			</table>
+  	</div>
+	</div>
 
-<h2>Top TE Salaries</h2>
-
-<table>
-	<tr>
-		<th>Player Name</th>
-		<th>Salary</th>
-	</tr>
-	<% @top_salaries["TE"].each do |player, salary| %>
-	<tr>
-		<td><%= player %></td>
-		<td><%= number_to_currency(salary) %></td>
-	</tr>
-	<% end %>
-	<tr>
-		<td>Avg Salary</td>
-		<td><%= number_to_currency(@top_salaries["TE"].sum { |player, salary| salary } /
-			@top_salaries["TE"].size) %></td>
-	</tr>
-	<tr>
-		<td>50% of Avg Salary</td>
-		<td><%= number_to_currency(@top_salaries["TE"].sum { |player, salary| salary } /
-			@top_salaries["TE"].size * 0.50) %></td>
-	</tr>
-</table>
-
-<h2>Top QB Scores</h2>
-
-<table>
-	<tr>
-		<th>Player Name</th>
-		<th>Years</th>
-		<th>Salary</th>
-		<th>Points</th>
-		<th>Holdout?</th>
-	</tr>
-	<% @top_scores["QB"].each do |name, salary, points, yrs| %>
-	<tr>
-		<td><%= name %></td>
-		<td><%= yrs %></td>
-		<td><%= number_to_currency(salary) %></td>
-		<td><%= points %></td>
-		<td><%= holdout?(yrs, points, @holdout_points["QB"], salary, @holdout_salaries["QB"]) %></td>
-	</tr>
-	<% end %>
-</table>
-
-<h2>Top RB Scores</h2>
-
-<table>
-	<tr>
-		<th>Player Name</th>
-		<th>Years</th>
-		<th>Salary</th>
-		<th>Points</th>
-		<th>Holdout?</th>
-	</tr>
-	<% @top_scores["RB"].each do |name, salary, points, yrs| %>
-	<tr>
-		<td><%= name %></td>
-		<td><%= yrs %></td>
-		<td><%= number_to_currency(salary) %></td>
-		<td><%= points %></td>
-		<td><%= holdout?(yrs, points, @holdout_points["RB"], salary, @holdout_salaries["RB"]) %></td>
-	</tr>
-	<% end %>
-</table>
-
-<h2>Top WR Scores</h2>
-
-<table>
-	<tr>
-		<th>Player Name</th>
-		<th>Years</th>
-		<th>Salary</th>
-		<th>Points</th>
-		<th>Holdout?</th>
-	</tr>
-	<% @top_scores["WR"].each do |name, salary, points, yrs| %>
-	<tr>
-		<td><%= name %></td>
-		<td><%= yrs %></td>
-		<td><%= number_to_currency(salary) %></td>
-		<td><%= points %></td>
-		<td><%= holdout?(yrs, points, @holdout_points["WR"], salary, @holdout_salaries["WR"]) %></td>
-	</tr>
-	<% end %>
-</table>
-
-<h2>Top TE Scores</h2>
-
-<table>
-	<tr>
-		<th>Player Name</th>
-		<th>Years</th>
-		<th>Salary</th>
-		<th>Points</th>
-		<th>Holdout?</th>
-	</tr>
-	<% @top_scores["TE"].each do |name, salary, points, yrs| %>
-	<tr>
-		<td><%= name %></td>
-		<td><%= yrs %></td>
-		<td><%= number_to_currency(salary) %></td>
-		<td><%= points %></td>
-		<td><%= holdout?(yrs, points, @holdout_points["TE"], salary, @holdout_salaries["TE"]) %></td>
-	</tr>
-	<% end %>
-</table>
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="5" class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top TE Scores</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Years</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Salary</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Points</th>
+					<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Holdout?</th>
+				</tr>
+				<% @top_scores["TE"].each do |name, salary, points, yrs| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= name %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= yrs %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= points %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= holdout?(yrs, points, @holdout_points["TE"], salary, @holdout_salaries["TE"]) %></td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+	</div>
+</div>

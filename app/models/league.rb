@@ -92,4 +92,44 @@ class League < ApplicationRecord
 		return top_scores_players
 	end
 
+	def tag_calculations(position)
+		return unless self.player_positions.include? position
+		return Player
+			.joins(:contracts)
+			.where("players.position = ? AND contracts.years_remaining > 1", position)
+			.order('contracts.salary DESC NULLS LAST')
+			.limit(5)
+			.pluck('players.name, contracts.salary, contracts.years_remaining')
+	end
+
+	def tag_calculations_all_positions
+		tag_players = {}
+		tag_players["QB"] = tag_calculations("QB")
+		tag_players["RB"] = tag_calculations("RB")
+		tag_players["WR"] = tag_calculations("WR")
+		tag_players["TE"] = tag_calculations("TE")
+		return tag_players
+	end
+
+	def top_scoring_expiring(position, player_count)
+		return unless self.player_positions.include? position
+		return Team
+			.joins(:players, :contracts)
+			.where("players.position = ?", position)
+			.where("(contracts.years_remaining <= 1 OR contracts.years_remaining IS NULL)")
+			.order('players.ytd_score DESC NULLS LAST')
+			.group('players.name, teams.name, players.ytd_score, contracts.salary')
+			.limit(player_count)
+			.pluck('players.name, teams.name, players.ytd_score, contracts.salary')
+	end
+
+	def top_scoring_expiring_all_positions
+		top_expiring = {}
+		top_expiring["QB"] = top_scoring_expiring("QB", 7)
+		top_expiring["RB"] = top_scoring_expiring("RB", 7)
+		top_expiring["WR"] = top_scoring_expiring("WR", 7)
+		top_expiring["TE"] = top_scoring_expiring("TE", 7)
+		return top_expiring
+	end
+
 end

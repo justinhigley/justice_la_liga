@@ -7,4 +7,5 @@ Rails.application.routes.draw do
 
   resources :teams, only: [:index, :show]
   resources :holdouts, only: [:index]
+  resources :tags, only: [:index]
 end

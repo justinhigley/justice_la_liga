@@ -1,3 +1,4 @@
+/*
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
@@ -5,3 +6,4 @@ export default class extends Controller {
     this.element.textContent = "Hello World!"
   }
 }
+*/

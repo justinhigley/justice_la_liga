@@ -1,0 +1,268 @@
+<container class="flex justify-center">
+	<div class="text-base max-w-prose p-3 bg-slate-100 rounded-lg shadow-sm">
+		<p>The full franchise and transition tag rules are at the bottom of the page. This page has two tables for each position group. The first table shows the top salaries at the position and is used to calculate the franchise tag initial bid/transition tag salary. The second shows the top scorers eligible to be tagged.</p>
+	</div>
+</container>
+
+<div class="flex">
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="3" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top QB Salaries</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2021 Salary</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2022 Salary</th>
+				</tr>
+				<% @tags["QB"].each do |player, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary * 1.2) %></td>
+				</tr>
+				<% end %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light font-bold">Avg Salary</td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["QB"].sum { |player, salary| salary } /
+						@tags["QB"].size) %></td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["QB"].sum { |player, salary| salary } /
+						@tags["QB"].size * 1.2) %></td>
+				</tr>
+				<tr class="hover:bg-grey-lighter">
+					<td colspan="2" class="py-4 px-6 bg-slate-100 border-b border-grey-light font-bold">Minimum Tagged Salary</td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["QB"].sum { |player, salary| salary } /
+						@tags["QB"].size * 1.2) %></td>
+				</tr>
+			</table>
+  	</div>
+	</div>
+
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="5" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top Expiring QBs</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Team</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Score</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2021 Salary</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Min Salary</th>
+				</tr>
+				<% @top_scores["QB"].each do |player, team, score, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= team %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= score %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency min_salary(salary, @tags["QB"]) %></td>
+				</tr>
+				<% end %>
+			</table>
+  	</div>
+	</div>
+</div>
+
+<div class="flex">
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="3" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top RB Salaries</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2021 Salary</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2022 Salary</th>
+				</tr>
+				<% @tags["RB"].each do |player, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary * 1.2) %></td>
+				</tr>
+				<% end %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light font-bold">Avg Salary</td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["RB"].sum { |player, salary| salary } /
+						@tags["RB"].size) %></td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["RB"].sum { |player, salary| salary } /
+						@tags["RB"].size * 1.2) %></td>
+				</tr>
+				<tr class="hover:bg-grey-lighter">
+					<td colspan="2" class="py-4 px-6 bg-slate-100 border-b border-grey-light font-bold">Minimum Tagged Salary</td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["RB"].sum { |player, salary| salary } /
+						@tags["RB"].size * 1.2) %></td>
+				</tr>
+			</table>
+  	</div>
+	</div>
+
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="5" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top Expiring RBs</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Team</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Score</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2021 Salary</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Min Salary</th>
+				</tr>
+				<% @top_scores["RB"].each do |player, team, score, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= team %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= score %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency min_salary(salary, @tags["RB"]) %></td>
+				</tr>
+				<% end %>
+			</table>
+  	</div>
+	</div>
+</div>
+
+<div class="flex">
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="3" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top WR Salaries</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2021 Salary</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2022 Salary</th>
+				</tr>
+				<% @tags["WR"].each do |player, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary * 1.2) %></td>
+				</tr>
+				<% end %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light font-bold">Avg Salary</td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["WR"].sum { |player, salary| salary } /
+						@tags["WR"].size) %></td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["WR"].sum { |player, salary| salary } /
+						@tags["WR"].size * 1.2) %></td>
+				</tr>
+				<tr class="hover:bg-grey-lighter">
+					<td colspan="2" class="py-4 px-6 bg-slate-100 border-b border-grey-light font-bold">Minimum Tagged Salary</td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["WR"].sum { |player, salary| salary } /
+						@tags["WR"].size * 1.2) %></td>
+				</tr>
+			</table>
+  	</div>
+	</div>
+
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="5" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top Expiring WRs</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Team</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Score</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2021 Salary</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Min Salary</th>
+				</tr>
+				<% @top_scores["WR"].each do |player, team, score, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= team %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= score %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency min_salary(salary, @tags["WR"]) %></td>
+				</tr>
+				<% end %>
+			</table>
+  	</div>
+	</div>
+</div>
+
+<div class="flex">
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="3" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top TE Salaries</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2021 Salary</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2022 Salary</th>
+				</tr>
+				<% @tags["TE"].each do |player, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary * 1.2) %></td>
+				</tr>
+				<% end %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light font-bold">Avg Salary</td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["TE"].sum { |player, salary| salary } /
+						@tags["TE"].size) %></td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["TE"].sum { |player, salary| salary } /
+						@tags["TE"].size * 1.2) %></td>
+				</tr>
+				<tr class="hover:bg-grey-lighter">
+					<td colspan="2" class="py-4 px-6 bg-slate-100 border-b border-grey-light font-bold">Minimum Tagged Salary</td>
+					<td class="py-4 px-6 bg-slate-100 border-b border-grey-light"><%= number_to_currency(@tags["TE"].sum { |player, salary| salary } /
+						@tags["TE"].size * 1.2) %></td>
+				</tr>
+			</table>
+  	</div>
+	</div>
+
+	<div class="mx-auto">
+ 		<div class="bg-white shadow-md rounded my-6">
+			<table class="text-left w-full border-collapse">
+				<tr>
+					<th colspan="5" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark text-center border-b border-grey-light">Top Expiring TEs</th>
+				</tr>
+				<tr>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Player Name</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Team</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Score</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">2021 Salary</th>
+					<th class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Min Salary</th>
+				</tr>
+				<% @top_scores["TE"].each do |player, team, score, salary| %>
+				<tr class="hover:bg-grey-lighter">
+					<td class="py-4 px-6 border-b border-grey-light"><%= player %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= team %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= score %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency(salary) %></td>
+					<td class="py-4 px-6 border-b border-grey-light"><%= number_to_currency min_salary(salary, @tags["TE"]) %></td>
+				</tr>
+				<% end %>
+			</table>
+  	</div>
+	</div>
+</div>
+
+<container class="flex justify-center">
+	<div class="px-8 bg-slate-100 rounded-lg shadow-sm">
+		<article class="prose">
+			<div class="text-base max-w-prose">
+				<h2 class="font-xl font-bold">F. Franchise Tags and Transition Tags</h2>
+				<ul class="list-disc">
+					<li>Each winter (by March 1), a team may apply its Franchise Tag to a player who was under contract and in the final year of his deal in the season just passed. This signals to the league that an open bidding process will take place for this player. In order to bid for a Franchise Tagged player, a team must have a first-round pick in the upcoming Rookie Draft. The bidding will take place between March 1 and March 8, and the beginning bid amount will be whichever is highest: (a) the average of the current top five highest-paid players at the relevant position <span class="font-bold">after</span> salaries go up March 1, or (b) 120% of the player's current salary. The commissioner will manage this "slow" auction and come up with a high bidder on March 8. At that point, the player's original owner must decide whether to match the highest bid. The Franchise Tagged player then signs a contract with either the high bidder or the original owner who matched, with the length of contract to be determined by the high bidder or original owner (whoever winds up with the player). If the original owner doesn't match that team receives the high-bidding team's first-round Rookie Draft pick in that May's draft.</li>
+					<li>Each winter (by March 1), teams may apply its Transition Tag to a player who was under contract and in the final year of his deal in the season just passed. In this case, there's no bidding...the player signs a one-year deal at whichever is highest: (a) the average of the current top five highest-paid players at his position <span class="font-bold">after</span> salaries go up March 1, or (b) 120% of his current salary. After that contract expires, he's a free agent, and he cannot be signed to an extension during that final contract year.</li>
+					<li>A franchise may only use its Franchise Tag <span class="font-bold">or</span> its Transition Tag in any single offseason. It may not use one of each in the same offseason.</li>
+				</ul>
+			</div>
+		</article>
+	</div>
+</container>

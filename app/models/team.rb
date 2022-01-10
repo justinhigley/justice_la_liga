@@ -19,4 +19,20 @@
 class Team < ApplicationRecord
 	belongs_to :league, foreign_key: 'mfl_league_id', primary_key: 'mfl_id'
 	has_many :players, foreign_key: 'mfl_team_id', primary_key: 'mfl_id'
+
+	def roster_salary
+		players.roster.sum(:salary)
+	end
+
+	def injured_reserve_salary
+		players.injured_reserve.sum(:salary) * 0.5
+	end
+
+	def taxi_salary
+		players.taxi.sum(:salary) * 0.25
+	end
+
+	def total_salary
+		roster_salary + injured_reserve_salary + taxi_salary
+	end
 end

@@ -21,7 +21,14 @@
 #
 
 class Player < ApplicationRecord
-	belongs_to :team, foreign_key: 'mfl_team_id', primary_key: 'mfl_id'
+	belongs_to :team,
+		foreign_key: 'mfl_team_id',
+		primary_key: 'mfl_id',
+		optional: true
 
-	scope :in_league, ->(league) { where("position IN (?)", league.player_positions )}
+	scope :free_agents, -> { where(status: nil) }
+	scope :expiring, -> { where('salary IS NOT NULL AND years_remaining < 2') }
+	scope :injured_reserve, -> { where(status: "INJURED_RESERVE") }
+	scope :roster, -> { where(status: "ROSTER") }
+	scope :taxi, -> { where(status: "TAXI") }
 end

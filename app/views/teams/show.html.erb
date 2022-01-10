@@ -23,25 +23,25 @@
           </th>
         </tr>
         <%
-          @team.contracts.includes(:player)
-            .order('status DESC', 'players.position', 'salary DESC')
-            .each do |contract|
+          @team.players
+            .order('status DESC', 'position', 'salary DESC')
+            .each do |player|
         %>
         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= contract.player.name %>
+            <%= player.name %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= contract.player.position %>
+            <%= player.position %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= number_to_currency(contract.salary) %>
+            <%= number_to_currency(player.salary) %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= contract.years_remaining %>
+            <%= player.years_remaining %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= contract.status %>
+            <%= player.status %>
           </td>
         </tr>
         <% end %>

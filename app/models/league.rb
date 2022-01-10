@@ -1,12 +1,28 @@
+# == Schema Information
+#
+# Table name: leagues
+#
+#  id               :uuid             not null, primary key
+#  mfl_id           :string
+#  name             :string
+#  salary_cap       :decimal(7, 2)
+#  base_url         :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  player_positions :string           is an Array
+#
+# Indexes
+#
+#  league_mfl_id  (mfl_id) UNIQUE
+#
+
 class League < ApplicationRecord
 	has_many :teams, foreign_key: 'mfl_league_id', primary_key: 'mfl_id'
-	has_many :contracts, foreign_key: 'mfl_league_id', primary_key: 'mfl_id'
 	has_many :players, ->(league) { unscope(:where).where("position IN (?)", league.player_positions) }
 
 	def holdout_salary(position, player_count)
 		return unless self.player_positions.include? position
 		salaries = Player
-			.joins(:contracts)
 			.where(position: position)
 			.order('salary DESC NULLS LAST')
 			.limit(player_count)
@@ -49,7 +65,6 @@ class League < ApplicationRecord
 		amount = holdout_salary(position, player_count)
 		points = holdout_points(position, player_count)
 		return Player
-			.joins(:contracts)
 			.where("position = ? AND ytd_score > ? AND salary < ? AND years_remaining > 1",
 							position, points, amount)
 	end
@@ -57,8 +72,7 @@ class League < ApplicationRecord
 	def top_salary(position, player_count)
 		return unless self.player_positions.include? position
 		return Player
-			.joins(:contracts)
-			.where("players.position = ?", position)
+			.where("position = ?", position)
 			.order('salary DESC NULLS LAST')
 			.limit(player_count)
 			.pluck(:name, :salary)
@@ -76,8 +90,7 @@ class League < ApplicationRecord
 	def top_scores(position, player_count)
 		return unless self.player_positions.include? position
 		return Player
-			.joins(:contracts)
-			.where("players.position = ?", position)
+			.where("position = ?", position)
 			.order('ytd_score DESC NULLS LAST')
 			.limit(player_count)
 			.pluck(:name, :salary, :ytd_score, :years_remaining)
@@ -95,11 +108,10 @@ class League < ApplicationRecord
 	def tag_calculations(position)
 		return unless self.player_positions.include? position
 		return Player
-			.joins(:contracts)
-			.where("players.position = ? AND contracts.years_remaining > 1", position)
-			.order('contracts.salary DESC NULLS LAST')
+			.where("position = ? AND years_remaining > 1", position)
+			.order('salary DESC NULLS LAST')
 			.limit(5)
-			.pluck('players.name, contracts.salary, contracts.years_remaining')
+			.pluck(:name, :salary, :years_remaining)
 	end
 
 	def tag_calculations_all_positions
@@ -114,13 +126,13 @@ class League < ApplicationRecord
 	def top_scoring_expiring(position, player_count)
 		return unless self.player_positions.include? position
 		return Team
-			.joins(:players, :contracts)
+			.joins(:players)
 			.where("players.position = ?", position)
-			.where("(contracts.years_remaining <= 1 OR contracts.years_remaining IS NULL)")
+			.where("(players.years_remaining <= 1 OR players.years_remaining IS NULL)")
 			.order('players.ytd_score DESC NULLS LAST')
-			.group('players.name, teams.name, players.ytd_score, contracts.salary')
+			.group('players.name, teams.name, players.ytd_score, players.salary')
 			.limit(player_count)
-			.pluck('players.name, teams.name, players.ytd_score, contracts.salary')
+			.pluck('players.name, teams.name, players.ytd_score, players.salary')
 	end
 
 	def top_scoring_expiring_all_positions

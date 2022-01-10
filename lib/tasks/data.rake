@@ -33,14 +33,14 @@ task :populate_teams => :environment do
 	team_attrs = formatted_teams.map do |team|
 		{
 			mfl_league_id: "#{mfl_league_id}",
-			mfl_year: "#{mfl_year}",
-			mfl_id: "#{team["id"]}",
-			name: "#{team["name"]}",
-			owner_name: "#{team["owner_name"]}"
+			mfl_year: 		 "#{mfl_year}",
+			mfl_id: 			 "#{team["id"]}",
+			name: 				 "#{team["name"]}",
+			owner_name: 	 "#{team["owner_name"]}"
 		}
 	end
 
-	Team.upsert_all(team_attrs, unique_by: :teams_upsert_index)
+	Team.upsert_all(team_attrs, unique_by: :team_mfl_id)
 end
 
 desc "Download player list from MFL and update players table"
@@ -54,18 +54,26 @@ task :populate_players => :environment do
 
 	player_attrs = formatted_players.map do |player|
 		{
-			mfl_id: "#{player["id"]}",
-			position: "#{player["position"]}",
-			name: "#{player["name"]}",
-			team: "#{player["team"]}"
+			mfl_id: 					"#{player["id"]}",
+			position: 				"#{player["position"]}",
+			name: 						"#{player["name"]}",
+			team: 						"#{player["team"]}",
+			mfl_team_id: 			nil,
+			salary: 					nil,
+			years_remaining: 	nil,
+			status: 					nil,
+			ytd_score: 				nil
 		}
 	end
 
-	Player.upsert_all(player_attrs, unique_by: :player_mfl_id)
-
+	Player.upsert_all(
+		player_attrs,
+		update_only: [:position, :name, :team],
+		unique_by: :player_mfl_id
+	)
 end
 
-desc "Download contract list from MFL and update contracts table"
+desc "Download contract data and update players table"
 task :populate_contracts => :environment do
 
 	mfl_year = "2021"
@@ -81,9 +89,8 @@ task :populate_contracts => :environment do
 		team_id = "#{roster["id"]}"
 		roster["player"].map do |player|
 			{
+				mfl_id: "#{player["id"]}",
 				mfl_team_id: "#{team_id}",
-				mfl_player_id: "#{player["id"]}",
-				mfl_league_id: "#{mfl_league_id}",
 				salary: "#{player["salary"]}".to_f,
 				years_remaining: "#{player["contractYear"]}",
 				status: "#{player["status"]}"
@@ -91,7 +98,11 @@ task :populate_contracts => :environment do
 		end
 	end
 
-	Contract.upsert_all(contract_attrs.flatten, unique_by: :contracts_upsert_index)
+	Player.upsert_all(
+		contract_attrs.flatten,
+		unique_by: :player_mfl_id,
+		update_only: [:mfl_team_id, :salary, :years_remaining, :status]
+	)
 
 end
 

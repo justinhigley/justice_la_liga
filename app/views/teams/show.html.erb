@@ -23,7 +23,9 @@
           </th>
         </tr>
         <%
-          @team.players
+          @team
+            .players
+            .where(position: "QB", status: "ROSTER")
             .order('status DESC', 'position', 'salary DESC')
             .each do |player|
         %>
@@ -45,6 +47,117 @@
           </td>
         </tr>
         <% end %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td></td>
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            QBs
+          </td>
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%= number_to_currency @team.players.roster.where(position: "QB").sum(:salary) %>
+          </td>
+        </tr>
+        <%
+          @team
+            .players
+            .where(position: "RB", status: "ROSTER")
+            .order('status DESC', 'position', 'salary DESC')
+            .each do |player|
+        %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%= player.name %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.position %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= number_to_currency(player.salary) %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.years_remaining %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.status %>
+          </td>
+        </tr>
+        <% end %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td></td>
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            RBs
+          </td>
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%= number_to_currency @team.players.roster.where(position: "RB").sum(:salary) %>
+          </td>
+        </tr>
+        <%
+          @team
+            .players
+            .where(position: "WR", status: "ROSTER")
+            .order('status DESC', 'position', 'salary DESC')
+            .each do |player|
+        %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%= player.name %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.position %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= number_to_currency(player.salary) %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.years_remaining %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.status %>
+          </td>
+        </tr>
+        <% end %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td></td>
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            WRs
+          </td>
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%= number_to_currency @team.players.roster.where(position: "WR").sum(:salary) %>
+          </td>
+        </tr>
+        <%
+          @team
+            .players
+            .where(position: "TE", status: "ROSTER")
+            .order('status DESC', 'position', 'salary DESC')
+            .each do |player|
+        %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%= player.name %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.position %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= number_to_currency(player.salary) %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.years_remaining %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player.status %>
+          </td>
+        </tr>
+        <% end %>
+        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <td></td>
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            TEs
+          </td>
+          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <%= number_to_currency @team.players.roster.where(position: "TE").sum(:salary) %>
+          </td>
+        </tr>
       </table>
     </div>
   </div>

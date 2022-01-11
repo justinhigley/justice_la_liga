@@ -35,4 +35,29 @@ class Team < ApplicationRecord
 	def total_salary
 		roster_salary + injured_reserve_salary + taxi_salary
 	end
+
+	def salaries
+		salary_hash = {"2021": [], "2022": [], "2023": [], "2024": [], "2025": [], "2026": []}
+		salary_hash[:"2021"].push(future_salaries(0))
+		salary_hash[:"2022"].push(future_salaries(1))
+		salary_hash[:"2023"].push(future_salaries(2))
+		salary_hash[:"2024"].push(future_salaries(3))
+		salary_hash[:"2025"].push(future_salaries(4))
+		salary_hash[:"2026"].push(future_salaries(5))
+		return salary_hash
+	end
+
+	def future_salaries(years_away)
+		players
+			.pluck(:name, :years_remaining, :salary)
+			.select {|player| player[1].to_i >= years_away}
+			.map do |player|
+				{
+					name: player[0],
+					years: player[1],
+					salary: (player[2] * 1.2**years_away).round(2)
+				}
+			end
+	end
+
 end

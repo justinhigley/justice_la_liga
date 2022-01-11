@@ -124,3 +124,33 @@ task :populate_scores => :environment do
 		a_player.save
 	end
 end
+
+desc "Populate/Update Draft Picks table"
+task :populate_draft_picks => :environment do
+
+	mfl_year = "2021"
+	mfl_league_id = "63949"
+
+	response = Faraday.get "https://www65.myfantasyleague.com/#{mfl_year}/" \
+		"export?TYPE=futureDraftPicks&L=#{mfl_league_id}" \
+		"&APIKEY=#{Rails.application.credentials.justice_la_liga[:api_key]}&JSON=1"
+
+	formatted_draft_picks = JSON.parse(response.body)["futureDraftPicks"]["franchise"]
+
+	draft_pick_attrs = formatted_draft_picks.map do |franchise|
+		owner = "#{franchise["id"]}"
+		franchise["futureDraftPick"].map do |pick|
+			{
+				round: pick["round"],
+				original_owner: "#{pick["originalPickFor"]}",
+				current_owner: owner,
+				year: pick["year"]
+			}
+		end
+	end
+
+	DraftPick.upsert_all(
+		draft_pick_attrs.flatten,
+		unique_by: :draft_pick_upsert_index)
+end
+

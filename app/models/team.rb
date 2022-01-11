@@ -13,12 +13,13 @@
 #
 # Indexes
 #
-#  teams_upsert_index  (mfl_league_id,mfl_year,mfl_id) UNIQUE
+#  team_mfl_id  (mfl_id) UNIQUE
 #
 
 class Team < ApplicationRecord
 	belongs_to :league, foreign_key: 'mfl_league_id', primary_key: 'mfl_id'
 	has_many :players, foreign_key: 'mfl_team_id', primary_key: 'mfl_id'
+	has_many :draft_picks, foreign_key: 'current_owner', primary_key: 'mfl_id'
 
 	def roster_salary
 		players.roster.sum(:salary)

@@ -10,11 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_01_042959) do
+ActiveRecord::Schema.define(version: 2022_01_11_051138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "draft_picks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "round"
+    t.string "original_owner"
+    t.string "current_owner"
+    t.integer "year"
+    t.decimal "minimum_salary", precision: 7, scale: 2
+    t.decimal "maximum_salary", precision: 7, scale: 2
+    t.decimal "average_salary", precision: 7, scale: 2
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["year", "round", "original_owner"], name: "draft_pick_upsert_index", unique: true
+  end
 
   create_table "leagues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "mfl_id"

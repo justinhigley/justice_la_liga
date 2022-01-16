@@ -6,5 +6,6 @@ class TeamsController < ApplicationController
 	def show
 		@team = Team.find(params[:id])
 		@salaries = @team.salaries
+		@draft_picks = @team.draft_picks.order(:year, :round)
 	end
 end

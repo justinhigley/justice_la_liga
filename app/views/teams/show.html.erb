@@ -159,6 +159,41 @@
           </td>
         </tr>
       </table>
+      <table>
+        <tr>
+          <th scope="col" colspan="4" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            Draft Picks
+          </th>
+        <tr>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            Year
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            Round
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            Description
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            Est. Salary
+          </th>
+        </tr>
+        <% @draft_picks.each do |pick| %>
+        <tr>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= pick.year %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= pick.round %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= pick.description %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+          </td>
+        </tr>
+        <% end %>
+      </table>
     </div>
   </div>
 </div>

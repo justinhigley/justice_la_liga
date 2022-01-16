@@ -25,4 +25,23 @@ class DraftPick < ApplicationRecord
     "Year #{year} Round #{round} draft pick originally belonging to " +
       Team.find_by(mfl_id: original_owner).name
   end
+
+  def estimate_salary
+    value = [
+      [45, 37, 30, 26, 22], 15, 7, 4, 2
+    ]
+    if self.round == 1
+      self.update(
+        maximum_salary: value[0][0],
+        minimum_salary: value[0][4],
+        average_salary: 29.42
+      )
+    else
+      self.update(
+        maximum_salary: value[self.round - 1],
+        minimum_salary: value[self.round - 1],
+        average_salary: value[self.round - 1]
+      )
+    end
+  end
 end

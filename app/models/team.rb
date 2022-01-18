@@ -61,4 +61,19 @@ class Team < ApplicationRecord
 			end
 	end
 
+	def roster
+		data = {}
+		players.pluck(:position).uniq.each { |n| data[n] = [] }
+		players.each do |player|
+			data[player.position] << Hash[
+				name: player.name,
+				contract_years: player.years_remaining || 1,
+				status: player.status,
+				cap_cost: player.cap_cost,
+				salaries: player.salaries
+			]
+		end
+		return data
+	end
+
 end

@@ -3,17 +3,14 @@
     <div class="bg-white shadow-md rounded my-6">
       <table class="text-left w-full border-collapse">
         <tr>
-          <th colspan="5" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light"><%= @team.name + ' - ' + @team.owner_name %></th>
+          <th colspan="9" class="py-4 px-6 bg-slate-100 font-bold uppercase text-sm text-grey-dark border-b border-grey-light"><%= @team.name + ' - ' + @team.owner_name %></th>
         </tr>
         <tr>
           <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
             Player
           </th>
           <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-            Position
-          </th>
-          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
-            Salary
+            Current Cap Cost
           </th>
           <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
             Years Remaining
@@ -21,144 +18,87 @@
           <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
             Roster Status
           </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            2021 Salary
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            2022 Salary
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            2023 Salary
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            2024 Salary
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            2025 Salary
+          </th>
         </tr>
-        <%
-          @team
-            .players
-            .where(position: "QB", status: "ROSTER")
-            .order('status DESC', 'position', 'salary DESC')
-            .each do |player|
-        %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= player.name %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.position %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= number_to_currency(player.salary) %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.years_remaining %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.status %>
+        <% @roster.each do |position, players| %>
+        <tr>
+          <td>
+            <%= position %>
           </td>
         </tr>
-        <% end %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td></td>
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            QBs
-          </td>
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= number_to_currency @team.players.roster.where(position: "QB").sum(:salary) %>
-          </td>
-        </tr>
-        <%
-          @team
-            .players
-            .where(position: "RB", status: "ROSTER")
-            .order('status DESC', 'position', 'salary DESC')
-            .each do |player|
-        %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= player.name %>
+        <% players.each do |player| %>
+        <tr>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= player[:name] %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.position %>
+            <%= number_to_currency player[:cap_cost] %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= number_to_currency(player.salary) %>
+            <%= player[:contract_years] || 1 %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.years_remaining %>
+            <%= player[:status] %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.status %>
+            <%= number_to_currency player[:salaries][0] %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= number_to_currency player[:salaries][1] %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= number_to_currency player[:salaries][2] %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= number_to_currency player[:salaries][3] %>
+          </td>
+          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= number_to_currency player[:salaries][4] %>
           </td>
         </tr>
         <% end %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td></td>
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            RBs
-          </td>
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= number_to_currency @team.players.roster.where(position: "RB").sum(:salary) %>
-          </td>
-        </tr>
-        <%
-          @team
-            .players
-            .where(position: "WR", status: "ROSTER")
-            .order('status DESC', 'position', 'salary DESC')
-            .each do |player|
-        %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= player.name %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.position %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= number_to_currency(player.salary) %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.years_remaining %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.status %>
-          </td>
-        </tr>
         <% end %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td></td>
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            WRs
-          </td>
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= number_to_currency @team.players.roster.where(position: "WR").sum(:salary) %>
-          </td>
-        </tr>
-        <%
-          @team
-            .players
-            .where(position: "TE", status: "ROSTER")
-            .order('status DESC', 'position', 'salary DESC')
-            .each do |player|
-        %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= player.name %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.position %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= number_to_currency(player.salary) %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.years_remaining %>
-          </td>
-          <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
-            <%= player.status %>
-          </td>
-        </tr>
-        <% end %>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-          <td></td>
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            TEs
-          </td>
-          <td class="py-2 px-6 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white">
-            <%= number_to_currency @team.players.roster.where(position: "TE").sum(:salary) %>
-          </td>
+        <tr>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            Totals
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            <%= number_to_currency @roster.map{|k, v| v.map {|player| player[:cap_cost]}}.flatten.compact.sum %>
+          </th>
+          <th scope="col" colspan="2" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            <%= number_to_currency @roster.map{|k, v| v.map {|player| player[:salaries][0]}}.flatten.compact.sum %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            <%= number_to_currency @roster.map{|k, v| v.map {|player| player[:salaries][1]}}.flatten.compact.sum %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            <%= number_to_currency @roster.map{|k, v| v.map {|player| player[:salaries][2]}}.flatten.compact.sum %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            <%= number_to_currency @roster.map{|k, v| v.map {|player| player[:salaries][3]}}.flatten.compact.sum %>
+          </th>
+          <th scope="col" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
+            <%= number_to_currency @roster.map{|k, v| v.map {|player| player[:salaries][4]}}.flatten.compact.sum %>
+          </th>
         </tr>
       </table>
+      <hr />
       <table>
         <tr>
           <th scope="col" colspan="4" class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400">
@@ -190,6 +130,7 @@
             <%= pick.description %>
           </td>
           <td class="py-2 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-400">
+            <%= number_to_currency pick.average_salary %>
           </td>
         </tr>
         <% end %>

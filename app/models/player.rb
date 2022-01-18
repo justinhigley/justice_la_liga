@@ -31,4 +31,18 @@ class Player < ApplicationRecord
 	scope :injured_reserve, -> { where(status: "INJURED_RESERVE") }
 	scope :roster, -> { where(status: "ROSTER") }
 	scope :taxi, -> { where(status: "TAXI") }
+
+	def cap_cost
+		multiplier = {
+			ROSTER: 1.0,
+			INJURED_RESERVE: 0.5,
+			TAXI: 0.25
+		}
+		salary * multiplier[status.to_sym]
+	end
+
+	def salaries
+		salaries = Array.new(years_remaining || 1) { |i| i }
+		salaries.map { |i| 1.2**i * salary }
+	end
 end
